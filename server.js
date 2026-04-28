@@ -26,6 +26,7 @@ mongoose.connect(process.env.MONGO_URI, {
 const songSchema = new mongoose.Schema({
   title: { type: String, required: true },
   artist: { type: String, required: true },
+  genre: { type: String, required: true},
   file: { type: String, required: true },
   cover: { type: String, required: true }
 }, { timestamps: true });
@@ -57,6 +58,27 @@ app.post('/songs', async ( req, res) => {
         res.status(400).json({error: err.message})
     }
 })
+
+// UPDATE SONG
+app.put('/songs/:id', async (req, res) => {
+  try {
+    const updated = await Song.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    );
+
+    if (!updated) {
+      return res.status(404).json({ message: "Song not found" });
+    }
+
+    res.json(updated);
+
+  } catch (err) {
+    res.status(400).json({ error: "Invalid ID" });
+  }
+});
+
 
 const port = 3000;
 
