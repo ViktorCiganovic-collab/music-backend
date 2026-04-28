@@ -45,7 +45,7 @@ app.get('/songs', async (req, res) => {
 });
 
 //Create add new song to the server
-app.post('songs', async ( req, res) => {
+app.post('/songs', async ( req, res) => {
 
     try {
         const newSong = new Song(req.body);
