@@ -1,6 +1,6 @@
 
-const express = require('express');
-const mongoose = require('mongoose');
+const express = require('express'); //API framework, simplies creation of HTTP servers, provides middleware and API rutes
+const mongoose = require('mongoose'); // simpliefies querybuilding to mongodb databases Song.find() e.g and allows creating document schemas
 const dotenv = require('dotenv'); //for using environment variables 
 const cors = require('cors');
 
@@ -22,7 +22,7 @@ mongoose.connect(process.env.MONGO_URI, {
 .then(() => console.log('MongoDB connected'))
 .catch(err => console.error(err));
 
-// Create structure of the documents in the database collection. Document = each individual record
+// Create structure of the documents in the database collection. Document = each individual record. Documents are store as JSON objects.
 const songSchema = new mongoose.Schema({
   title: { type: String, required: true },
   artist: { type: String, required: true },
@@ -78,6 +78,18 @@ app.put('/songs/:id', async (req, res) => {
     res.status(400).json({ error: "Invalid ID" });
   }
 });
+
+//APIs for testing with Postman client 
+app.get('/house', async (req, res) => {
+
+  try {
+    const houseMusic = await Song.find({ genre: "House" });
+    res.json(houseMusic);
+  }
+  catch (err) {
+    res.status(400).json({ error: "Could not process request"})
+  }
+})
 
 
 const port = 3000;
