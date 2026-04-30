@@ -83,6 +83,8 @@ app.put('/songs/:id', async (req, res) => {
 app.get('/house', async (req, res) => {
 
   try {
+    console.log("Someone searched for house music...");
+
     const houseMusic = await Song.find({ genre: "House" });
     res.json(houseMusic);
   }
